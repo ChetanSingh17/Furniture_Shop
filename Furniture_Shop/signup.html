@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet" />
+
+    <style>
+        * {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #5563aa;
+    font-family: 'Open Sans', sans-serif;
+    min-width: 222px;
+    background-image: url(/images/bg.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.container {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 400px;
+    box-shadow: 10px 10px 10px black;
+}
+
+h1 {
+    text-align: center;
+    background-color: #17a2b8;
+    padding: 10px;
+}
+
+.form-data {
+    padding: 10px 0px;
+    position: relative;
+}
+
+input,
+label {
+    display: block;
+    width: 100%;
+}
+
+label {
+    margin-bottom: 5px;
+}
+
+input {
+    padding: 5px;
+    border-radius: 4px;
+    outline: none;
+    border: 2px lightgrey solid;
+}
+
+.form-data i {
+    position: absolute;
+    top: 43px;
+    right: 10px;
+    display: none;
+}
+
+small {
+    visibility: hidden;
+}
+
+.form {
+    padding: 0px 20px;
+}
+
+.form button {
+    display: block;
+    width: 100%;
+    background-color:#17a2b8;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    margin: 20px 0px;
+    transition: all 0.3s ease-in-out;
+}
+
+.form button:hover {
+    background-color: gray;
+    font-size: 15px;
+}
+
+.form-data.success input {
+    border-color: green;
+}
+
+.form-data.success .fa-check-circle {
+    color: green;
+    display: block;
+}
+
+.form-data.error input {
+    border-color: red;
+}
+
+.form-data.error .fa-exclamation-circle {
+    color: red;
+    display: block;
+}
+
+.form-data.error small {
+    color: red;
+    visibility: visible;
+}
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Create Account</h1>
+        <form class="form" id="form">
+            <div class="form-data">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter Username" autocomplete="off" />
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                <small>Error Msg</small>
+            </div>
+            <div class="form-data">
+                <label for="email">Email Id</label>
+                <input type="text" id="email" placeholder="Enter Email Id" />
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                <small>Error Msg</small>
+            </div>
+            <div class="form-data">
+                <label for="password1">Password</label>
+                <input type="password" id="password1" placeholder="Enter Password" />
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                <small>Error Msg</small>
+            </div>
+            <div class="form-data">
+                <label for="password2">Re-Enter Password</label>
+                <input type="password" id="password2" placeholder="Enter Password Again" />
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                <small>Error Msg</small>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script>
+        var form = document.getElementById("form");
+        var username = document.getElementById("username");
+        var email = document.getElementById("email");
+        var password1 = document.getElementById("password1");
+        var password2 = document.getElementById("password2");
+        var msg = document.querySelector("small");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            checkInput();
+        });
+
+        function checkInput() {
+            let i = 0;
+            const usernameValue = username.value.trim();
+            if (usernameValue === "") {
+                showError(username, "Username can not be blank");
+            } else if (!isUsernameValid(usernameValue)) {
+                showError(username, "Username is not valid");
+            } else {
+                showSuccess(username);
+                i++;
+            }
+            const emailValue = email.value.trim();
+            if (emailValue === "") {
+                showError(email, "Email can not be blank");
+            } else if (!isEmailValid(emailValue)) {
+                showError(email, "Email id is not valid");
+            } else {
+                showSuccess(email);
+                i++;
+            }
+            const password1Value = password1.value.trim();
+            if (password1Value === "") {
+                showError(password1, "Password can not be blank");
+            } else {
+                showSuccess(password1);
+                i++;
+            }
+            const password2Value = password2.value.trim();
+            if (password2Value === "") {
+                showError(password2, "Re enter your password");
+            } else if (password2Value != password1Value) {
+                showError(password2, "Passwords does not match");
+            } else {
+                showSuccess(password2);
+                i++;
+            }
+            if (i == 4) {
+
+                window.location.href = "login.html";
+
+            }
+        }
+
+        function showError(input, msg) {
+            const formControl = input.parentNode;
+            formControl.className = "form-data error";
+            const small = formControl.querySelector("small");
+            small.innerHTML = msg;
+        }
+
+        function showSuccess(input) {
+            const formControl = input.parentNode;
+            formControl.className = "form-data success";
+        }
+
+        function isEmailValid(email) {
+            return /^([a-zA-Z0-9\.\-]+)@([a-zA-Z0-9]+)\.([a-zA-Z]{2,3})$/.test(
+                email
+            );
+        }
+
+        function isUsernameValid(username) {
+            return /^([a-z0-9]+)$/.test(username);
+        }
+    </script>
+
+</body>
+
+</html>
